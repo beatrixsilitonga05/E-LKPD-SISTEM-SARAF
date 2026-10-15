@@ -3,244 +3,177 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>E-LKPD Sistem Saraf Kelas XI - UNIMED</title>
+    <title>E-LKPD Interaktif Sistem Saraf - UNIMED</title>
     <style>
         :root {
             --primary: #006633;
             --secondary: #008844;
             --accent: #ffd700;
-            --bg: #f4f7f6;
+            --bg: #f0f4f1;
             --text: #2c3e50;
-            --card-bg: #ffffff;
+            --sidebar-width: 260px;
         }
 
         * {
             box-sizing: border-box;
             margin: 0;
             padding: 0;
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            font-family: 'Segoe UI', Roboto, Helvetica, Arial, sans-serif;
         }
 
         body {
             background-color: var(--bg);
             color: var(--text);
-            line-height: 1.6;
-            padding-bottom: 40px;
+            display: flex;
+            min-height: 100vh;
         }
 
-        header {
-            background: white;
-            border-bottom: 4px solid var(--primary);
+        /* Sidebar Navigasi Panel */
+        .sidebar {
+            width: var(--sidebar-width);
+            background: #004d26;
+            color: white;
+            display: flex;
+            flex-direction: column;
+            position: fixed;
+            height: 100vh;
+            left: 0;
+            top: 0;
+            box-shadow: 4px 0 10px rgba(0,0,0,0.15);
+            transition: all 0.3s;
+            z-index: 100;
+        }
+
+        .sidebar-header {
             padding: 20px;
             text-align: center;
-            box-shadow: 0 2px 10px rgba(0,0,0,0.1);
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
 
-        .header-container {
-            max-width: 900px;
-            margin: 0 auto;
+        .sidebar-header img {
+            width: 70px;
+            margin-bottom: 10px;
+        }
+
+        .sidebar-header h2 {
+            font-size: 0.95rem;
+            color: var(--accent);
+            text-transform: uppercase;
+        }
+
+        .sidebar-menu {
+            list-style: none;
+            padding: 15px 0;
+            flex: 1;
+        }
+
+        .menu-item {
+            padding: 12px 20px;
             display: flex;
             align-items: center;
-            justify-content: center;
-            gap: 20px;
-            flex-wrap: wrap;
-        }
-
-        .logo-unimed {
-            width: 90px;
-            height: auto;
-        }
-
-        .header-title h1 {
-            font-size: 1.4rem;
-            color: var(--primary);
-            text-transform: uppercase;
-            font-weight: 700;
-        }
-
-        .header-title h2 {
-            font-size: 1.1rem;
-            color: #444;
-            margin-top: 5px;
-        }
-
-        .header-title p {
+            gap: 12px;
+            cursor: pointer;
             font-size: 0.9rem;
-            color: #666;
+            border-left: 4px solid transparent;
+            transition: 0.2s;
         }
 
-        .author-badge {
+        .menu-item:hover, .menu-item.active {
+            background: rgba(255,255,255,0.1);
+            border-left-color: var(--accent);
+            color: var(--accent);
+        }
+
+        .progress-container {
+            padding: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 0.8rem;
+        }
+
+        .progress-bar {
+            height: 8px;
+            background: rgba(255,255,255,0.2);
+            border-radius: 4px;
+            margin-top: 8px;
+            overflow: hidden;
+        }
+
+        .progress-fill {
+            height: 100%;
+            width: 0%;
+            background: var(--accent);
+            transition: width 0.3s;
+        }
+
+        /* Main Content Panel */
+        .main-content {
+            margin-left: var(--sidebar-width);
+            flex: 1;
+            padding: 30px;
+            max-width: 1000px;
+        }
+
+        header.top-header {
+            background: white;
+            padding: 15px 25px;
+            border-radius: 12px;
+            box-shadow: 0 2px 8px rgba(0,0,0,0.05);
+            margin-bottom: 25px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .user-badge {
             background: #e8f5e9;
             color: var(--primary);
             padding: 6px 14px;
             border-radius: 20px;
             font-size: 0.85rem;
             font-weight: 600;
-            display: inline-block;
-            margin-top: 8px;
         }
 
-        .container {
-            max-width: 900px;
-            margin: 20px auto;
-            padding: 0 15px;
+        /* Card Sections */
+        .panel {
+            display: none;
         }
 
-        .nav-tabs {
-            display: flex;
-            gap: 10px;
-            margin-bottom: 20px;
-            overflow-x: auto;
+        .panel.active {
+            display: block;
+            animation: fadeIn 0.4s ease;
         }
 
-        .tab-btn {
-            flex: 1;
-            padding: 12px 15px;
-            background: #e0e0e0;
-            border: none;
-            border-radius: 8px;
-            font-weight: bold;
-            color: #555;
-            cursor: pointer;
-            transition: all 0.3s;
-            white-space: nowrap;
-        }
-
-        .tab-btn.active {
-            background: var(--primary);
-            color: white;
-            box-shadow: 0 4px 8px rgba(0,102,51,0.3);
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
         }
 
         .card {
-            background: var(--card-bg);
+            background: white;
             border-radius: 12px;
             padding: 25px;
             margin-bottom: 25px;
-            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+            box-shadow: 0 4px 12px rgba(0,0,0,0.05);
         }
 
-        h3.section-title {
+        .card-title {
             color: var(--primary);
             border-bottom: 2px solid #e2e8f0;
-            padding-bottom: 8px;
+            padding-bottom: 10px;
             margin-bottom: 15px;
-            font-size: 1.2rem;
             display: flex;
+            justify-content: space-between;
             align-items: center;
-            gap: 8px;
         }
 
-        .pbl-badge {
-            background: #fff3cd;
-            color: #856404;
+        .badge {
             font-size: 0.75rem;
             padding: 4px 8px;
             border-radius: 4px;
             font-weight: bold;
-            text-transform: uppercase;
         }
-
-        .deep-badge {
-            background: #d1ecf1;
-            color: #0c5460;
-            font-size: 0.75rem;
-            padding: 4px 8px;
-            border-radius: 4px;
-            font-weight: bold;
-            text-transform: uppercase;
-        }
-
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin: 15px 0;
-        }
-
-        th, td {
-            border: 1px solid #e2e8f0;
-            padding: 10px;
-            text-align: left;
-            font-size: 0.95rem;
-        }
-
-        th {
-            background-color: #f8fafc;
-            color: var(--primary);
-        }
-
-        textarea, input[type="text"] {
-            width: 100%;
-            padding: 10px;
-            border: 1px solid #ccc;
-            border-radius: 6px;
-            font-size: 0.95rem;
-            margin-top: 5px;
-            resize: vertical;
-        }
-
-        textarea:focus, input[type="text"]:focus {
-            outline: none;
-            border-color: var(--primary);
-            box-shadow: 0 0 5px rgba(0,102,51,0.3);
-        }
-
-        .quiz-option {
-            display: block;
-            background: #f8fafc;
-            border: 1px solid #cbd5e1;
-            padding: 10px 15px;
-            border-radius: 6px;
-            margin: 8px 0;
-            cursor: pointer;
-            transition: 0.2s;
-        }
-
-        .quiz-option:hover {
-            background: #e2e8f0;
-        }
-
-        .btn-submit {
-            background: var(--primary);
-            color: white;
-            border: none;
-            padding: 10px 20px;
-            border-radius: 6px;
-            font-weight: bold;
-            cursor: pointer;
-            margin-top: 10px;
-            transition: 0.2s;
-        }
-
-        .btn-submit:hover {
-            background: var(--secondary);
-        }
-
-        .feedback-box {
-            margin-top: 10px;
-            padding: 10px;
-            border-radius: 6px;
-            display: none;
-            font-weight: bold;
-        }
-
-        .feedback-success {
-            background: #d4edda;
-            color: #155724;
-        }
-
-        .feedback-error {
-            background: #f8d7da;
-            color: #721c24;
-        }
-
-        .tab-content {
-            display: none;
-        }
-
-        .tab-content.active {
-            display: block;
-        }
+        .badge-pbl { background: #fff3cd; color: #856404; }
+        .badge-deep { background: #d1ecf1; color: #0c5460; }
 
         .info-box {
             background: #eef9f3;
@@ -248,247 +181,334 @@
             padding: 12px 15px;
             margin: 15px 0;
             border-radius: 0 8px 8px 0;
+            font-size: 0.95rem;
+        }
+
+        /* Form Controls */
+        textarea, input[type="text"] {
+            width: 100%;
+            padding: 12px;
+            border: 1px solid #cbd5e1;
+            border-radius: 8px;
+            font-size: 0.95rem;
+            margin-top: 6px;
+            transition: 0.2s;
+        }
+
+        textarea:focus, input[type="text"]:focus {
+            border-color: var(--primary);
+            outline: none;
+            box-shadow: 0 0 0 3px rgba(0,102,51,0.15);
+        }
+
+        /* Game & Matching Area */
+        .matching-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 15px;
+            margin: 15px 0;
+        }
+
+        .match-item {
+            background: #f8fafc;
+            border: 2px dashed #cbd5e1;
+            padding: 12px;
+            border-radius: 8px;
+            min-height: 50px;
+            display: flex;
+            align-items: center;
+        }
+
+        .draggable {
+            background: var(--primary);
+            color: white;
+            padding: 8px 12px;
+            border-radius: 6px;
+            cursor: grab;
+            font-size: 0.85rem;
+            margin: 5px;
+            display: inline-block;
+        }
+
+        /* Buttons & Feedback */
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 8px;
+            font-weight: 600;
+            cursor: pointer;
+            transition: 0.2s;
+        }
+
+        .btn:hover { background: var(--secondary); }
+
+        .feedback {
+            margin-top: 10px;
+            padding: 12px;
+            border-radius: 8px;
+            display: none;
+            font-weight: 600;
+            font-size: 0.9rem;
+        }
+
+        .feedback.success { background: #d4edda; color: #155724; }
+        .feedback.error { background: #f8d7da; color: #721c24; }
+
+        /* Responsive */
+        @media (max-width: 768px) {
+            .sidebar { width: 70px; }
+            .sidebar-header h2, .sidebar-header p, .menu-text, .progress-container { display: none; }
+            .main-content { margin-left: 70px; padding: 15px; }
         }
     </style>
 </head>
 <body>
 
-    <header>
-        <div class="header-container">
-            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Logo_UNIMED.png" alt="Logo UNIMED" class="logo-unimed">
-            <div class="header-title">
-                <h1>E-LKPD INTERAKTIF SISTEM SARAF</h1>
-                <h2>Berbasis Problem Based Learning dengan Pendekatan Deep Learning</h2>
-                <p>Mata Pelajaran Biologi Kelas XI - SMA Negeri 11 Medan</p>
-                <div class="author-badge">Disusun Oleh: Beatrix Octaviana Silitonga (NIM 4233141016)</div>
+    <!-- Sidebar Panel Navigasi -->
+    <div class="sidebar">
+        <div class="sidebar-header">
+            <img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Logo_UNIMED.png" alt="Logo UNIMED">
+            <h2>E-LKPD SISTEM SARAF</h2>
+            <p style="font-size: 0.75rem; color: #ccc;">UNIMED x SMAN 11 Medan</p>
+        </div>
+        <ul class="sidebar-menu">
+            <li class="menu-item active" onclick="showPanel('panel-home', this)">
+                <span>📌</span><span class="menu-text">Beranda & Petunjuk</span>
+            </li>
+            <li class="menu-item" onclick="showPanel('panel-p1', this)">
+                <span>🧠</span><span class="menu-text">Pertemuan 1: Sel Saraf</span>
+            </li>
+            <li class="menu-item" onclick="showPanel('panel-p2', this)">
+                <span>⚡</span><span class="menu-text">Pertemuan 2: Gerak & Sistem</span>
+            </li>
+            <li class="menu-item" onclick="showPanel('panel-p3', this)">
+                <span>🏥</span><span class="menu-text">Pertemuan 3: Pola Hidup</span>
+            </li>
+            <li class="menu-item" onclick="showPanel('panel-rekap', this)">
+                <span>📊</span><span class="menu-text">Rekap Nilai Siswa</span>
+            </li>
+        </ul>
+        <div class="progress-container">
+            <div>Progres Pengerjaan: <span id="progress-text">0%</span></div>
+            <div class="progress-bar"><div class="progress-fill" id="progress-fill"></div></div>
+        </div>
+    </div>
+
+    <!-- Main Content Panel -->
+    <div class="main-content">
+        <header class="top-header">
+            <div>
+                <h1 style="font-size: 1.2rem; color: var(--primary);">E-LKPD BIOLOGI KELAS XI</h1>
+                <p style="font-size: 0.85rem; color: #666;">Pengembang: Beatrix Octaviana Silitonga (NIM 4233141016)</p>
             </div>
-        </div>
-    </header>
+            <div class="user-badge" id="user-display">Siswa: Belum Diisi</div>
+        </header>
 
-    <div class="container">
-
-        <div class="nav-tabs">
-            <button class="tab-btn active" onclick="switchTab('p0')">Petunjuk & Tujuan</button>
-            <button class="tab-btn" onclick="switchTab('p1')">Pertemuan 1: Sel Saraf</button>
-            <button class="tab-btn" onclick="switchTab('p2')">Pertemuan 2: Gerak & Sistem</button>
-            <button class="tab-btn" onclick="switchTab('p3')">Pertemuan 3: Pola Hidup</button>
-        </div>
-
-        <div id="p0" class="tab-content active">
+        <!-- PANEL 0: BERANDA & PETUNJUK -->
+        <div id="panel-home" class="panel active">
             <div class="card">
-                <h3 class="section-title">🎯 Tujuan Pembelajaran (Capaian Pembelajaran)</h3>
+                <h2 class="card-title">Identitas Peserta Didik</h2>
+                <div class="info-box">Silakan isi identitas Anda terlebih dahulu untuk memulai pengerjaan E-LKPD.</div>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px;">
+                    <div>
+                        <label><strong>Nama Lengkap:</strong></label>
+                        <input type="text" id="input-nama" placeholder="Masukkan nama Anda">
+                    </div>
+                    <div>
+                        <label><strong>Kelas:</strong></label>
+                        <input type="text" id="input-kelas" placeholder="Contoh: XI-3">
+                    </div>
+                </div>
+                <button class="btn" style="margin-top: 15px;" onclick="saveIdentitas()">Simpan Identitas</button>
+            </div>
+
+            <div class="card">
+                <h2 class="card-title">Capaian & Tujuan Pembelajaran</h2>
                 <ol style="margin-left: 20px; line-height: 1.8;">
                     <li>Mengidentifikasi bagian-bagian struktur sel saraf.</li>
                     <li>Mendeskripsikan impuls saraf, gerak sadar, dan gerak refleks.</li>
                     <li>Mendeskripsikan sistem saraf pusat dan sistem saraf tepi.</li>
-                    <li>Menyajikan hasil analisis pengaruh pola hidup terhadap kelainan pada struktur dan fungsi organ sistem saraf pada manusia.</li>
+                    <li>Menyajikan hasil analisis pengaruh pola hidup terhadap kelainan pada struktur dan fungsi organ sistem saraf.</li>
                 </ol>
             </div>
-
-            <div class="card">
-                <h3 class="section-title">📌 Petunjuk Penggunaan E-LKPD</h3>
-                <div class="info-box">
-                    <strong>Prinsip Pembelajaran Mendalam (Deep Learning):</strong><br>
-                    • <i>Mindful Learning</i>: Pahami tujuan aktivitas secara sadar dan reflektif.<br>
-                    • <i>Meaningful Learning</i>: Hubungkan materi biologi dengan masalah nyata kehidupan sehari-hari.<br>
-                    • <i>Joyful Learning</i>: Nikmati pengalaman belajar melalui kuis dan fitur interaktif.
-                </div>
-                <p>Isilah identitas diri Anda sebelum memulai kegiatan:</p>
-                <form id="form-identitas" style="margin-top: 10px;">
-                    <label><strong>Nama Lengkap:</strong></label>
-                    <input type="text" placeholder="Masukkan nama Anda" required>
-                    <label style="margin-top: 10px; display:block;"><strong>Kelas:</strong></label>
-                    <input type="text" placeholder="Contoh: XI-3" required>
-                </form>
-            </div>
         </div>
 
-        <div id="p1" class="tab-content">
+        <!-- PANEL 1: PERTEMUAN 1 -->
+        <div id="panel-p1" class="panel">
             <div class="card">
-                <h3 class="section-title">
+                <h2 class="card-title">
                     <span>FASE 1: Orientasi Masalah</span>
-                    <span class="pbl-badge">PBL</span>
-                    <span class="deep-badge">Meaningful</span>
-                </h3>
+                    <span class="badge badge-pbl">PBL</span>
+                </h2>
                 <div class="info-box">
-                    <strong>Masalah Pemantik:</strong><br>
-                    Ketika seseorang mengalami gangguan atau kerusakan pada <i>selubung mielin</i> (seperti pada penderita <i>Multiple Sclerosis</i>), penghantaran sinyal di dalam tubuh menjadi lambat atau terputus. Berdasarkan pengamatan awalmu, mengapa kerusakan struktur selubung mikroskopis ini dapat memengaruhi respons seluruh tubuh secara signifikan?
+                    <strong>Kasus Pemantik:</strong> Seseorang penderita <i>Multiple Sclerosis</i> mengalami kerusakan pada selubung mielin. Mengapa kerusakan struktur mikroskopis ini dapat memperlambat gerakan seluruh tubuh?
                 </div>
-                <label><strong>Hasil Analisis Awal & Pertanyaan Penyelidikanmu:</strong></label>
-                <textarea rows="3" placeholder="Tuliskan analisis atau pertanyaan pemantik kelompokmu di sini..."></textarea>
+                <label><strong>Jawaban Analisis Kelompok:</strong></label>
+                <textarea id="p1-orientasi" rows="3" placeholder="Tuliskan analisis awal Anda..."></textarea>
             </div>
 
             <div class="card">
-                <h3 class="section-title">Bahan Ajar Ringkas: Struktur Neuron & Impuls</h3>
-                <p>Sel saraf (neuron) adalah unit fungsional penyusun sistem saraf yang bertugas meneruskan impuls listrik. Neuron terdiri atas dendrit, badan sel, inti sel, akson, selubung mielin, nodus Ranvier, dan ujung akson.</p>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Bagian Neuron</th>
-                            <th>Fungsi Utama</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td>Dendrit</td><td>Menerima rangsangan dari sel/reseptor lain.</td></tr>
-                        <tr><td>Badan Sel & Inti</td><td>Mengatur aktivitas sel dan mengolah sinyal.</td></tr>
-                        <tr><td>Akson</td><td>Menghantarkan impuls menjauhi badan sel.</td></tr>
-                        <tr><td>Selubung Mielin</td><td>Isolator lemak yang mempercepat jalannya impuls.</td></tr>
-                        <tr><td>Nodus Ranvier</td><td>Celah loncatan impuls (penghantaran saltatori).</td></tr>
-                        <tr><td>Ujung Akson</td><td>Melepaskan neurotransmiter di celah sinapsis.</td></tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="card">
-                <h3 class="section-title">
-                    <span>Aktivitas Interaktif: Kuis Pemahaman Struktur Neuron</span>
-                    <span class="deep-badge">Joyful</span>
-                </h3>
-                <p><strong>Soal:</strong> Bagian neuron yang berfungsi melepaskan neurotransmiter untuk meneruskan sinyal melintasi celah sinapsis adalah...</p>
-                <div class="quiz-option" onclick="checkAnswer(this, false, 'fb-p1')">A. Dendrit</div>
-                <div class="quiz-option" onclick="checkAnswer(this, false, 'fb-p1')">B. Nodus Ranvier</div>
-                <div class="quiz-option" onclick="checkAnswer(this, true, 'fb-p1')">C. Ujung Akson (Terminal Akson)</div>
-                <div class="quiz-option" onclick="checkAnswer(this, false, 'fb-p1')">D. Selubung Mielin</div>
-                <div id="fb-p1" class="feedback-box"></div>
+                <h2 class="card-title">
+                    <span>Aktivitas Interaktif: Pencocokan Struktur Neuron</span>
+                    <span class="badge badge-deep">Joyful</span>
+                </h2>
+                <p>Pasangkan bagian neuron berikut dengan fungsi utamanya:</p>
+                <div class="matching-container">
+                    <div class="match-item">1. Dendrit ➔</div>
+                    <input type="text" id="m-dendrit" placeholder="Ketik fungsi (A/B/C)">
+                    <div class="match-item">2. Selubung Mielin ➔</div>
+                    <input type="text" id="m-mielin" placeholder="Ketik fungsi (A/B/C)">
+                    <div class="match-item">3. Ujung Akson ➔</div>
+                    <input type="text" id="m-akson" placeholder="Ketik fungsi (A/B/C)">
+                </div>
+                <div style="font-size:0.85rem; background:#f1f5f9; padding:10px; border-radius:6px;">
+                    <strong>Pilihan Fungsi:</strong><br>
+                    A. Mempercepat penghantaran impuls<br>
+                    B. Menerima rangsangan dari sel lain<br>
+                    C. Melepaskan neurotransmiter ke sinapsis
+                </div>
+                <button class="btn" style="margin-top:15px;" onclick="checkMatchingP1()">Cek Jawaban Game</button>
+                <div id="fb-p1-game" class="feedback"></div>
             </div>
         </div>
 
-        <div id="p2" class="tab-content">
+        <!-- PANEL 2: PERTEMUAN 2 -->
+        <div id="panel-p2" class="panel">
             <div class="card">
-                <h3 class="section-title">
-                    <span>FASE 1: Orientasi Masalah</span>
-                    <span class="pbl-badge">PBL</span>
-                </h3>
+                <h2 class="card-title">
+                    <span>FASE 1: kasus Gerak Refleks vs Sadar</span>
+                    <span class="badge badge-pbl">PBL</span>
+                </h2>
                 <div class="info-box">
-                    <strong>Studi Kasus Refleks:</strong><br>
-                    Saat Anda secara tidak sengaja menyentuh gagang panci yang sangat panas, tangan Anda akan terangkat dengan sangat cepat bahkan <i>sebelum</i> Anda sempat menyadari rasa sakitnya. Mengapa tubuh bertindak lebih cepat daripada kesadaran kita?
+                    Saat tangan tidak sengaja menyentuh panci panas, tangan langsung terangkat sebelum otak sempat merasakan sakitnya. Jelaskan jalur impuls tersebut!
                 </div>
-                <label><strong>Jelaskan Alur Rangsangan pada Kasus di Atas:</strong></label>
-                <textarea rows="3" placeholder="Tuliskan alur jalurnya (Reseptor -> Saraf Sensorik -> ... -> Efektor)"></textarea>
-            </div>
-
-            <div class="card">
-                <h3 class="section-title">Materi: Gerak Sadar vs Gerak Refleks</h3>
-                <table>
-                    <thead>
-                        <tr>
-                            <th>Aspek</th>
-                            <th>Gerak Sadar</th>
-                            <th>Gerak Refleks</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Pengendalian</td>
-                            <td>Ditoleransi dan dikontrol secara sadar oleh Otak Besar.</td>
-                            <td>Otomatis, cepat, tanpa kontrol kesadaran awal.</td>
-                        </tr>
-                        <tr>
-                            <td>Pusat Saraf Integrasi</td>
-                            <td>Otak Besar (Cerebrum)</td>
-                            <td>Sumsum Tulang Belakang (Spinal Cord)</td>
-                        </tr>
-                        <tr>
-                            <td>Contoh</td>
-                            <td>Mengambil pulpen di meja</td>
-                            <td>Menarik tangan dari benda panas / ketukan lutut</td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-
-            <div class="card">
-                <h3 class="section-title">
-                    <span>Interaktif: Permainan Alur Jalur Refleks</span>
-                    <span class="deep-badge">Joyful & Mindful</span>
-                </h3>
-                <p>Urutkan komponen jalur gerak refleks berikut dari awal hingga akhir dengan memilih nomor yang tepat:</p>
-                <p style="font-size: 0.9rem; color:#666; margin-bottom: 10px;">(Pilihan: 1. Efektor/Otot, 2. Reseptor Kulit, 3. Interneuron Sumsum Tulang Belakang, 4. Saraf Motorik, 5. Saraf Sensorik)</p>
-                
-                <label>Urutan Tepat (Isi dengan deretan angka, misal: 1-2-3-4-5):</label>
-                <input type="text" id="refleks-input" placeholder="Ketik urutan angka di sini...">
-                <button class="btn-submit" onclick="checkReflexOrder()">Cek Jawaban</button>
-                <div id="fb-p2" class="feedback-box"></div>
+                <label><strong>Urutan Jalur Refleks (Pilihan: Reseptor, Otot/Efektor, Sumsum Tulang Belakang, Saraf Sensorik, Saraf Motorik):</strong></label>
+                <input type="text" id="input-refleks" placeholder="Ketik urutannya, misal: Reseptor -> Saraf Sensorik -> ...">
+                <button class="btn" style="margin-top:10px;" onclick="checkRefleks()">Verifikasi Jalur</button>
+                <div id="fb-p2" class="feedback"></div>
             </div>
         </div>
 
-        <div id="p3" class="tab-content">
+        <!-- PANEL 3: PERTEMUAN 3 -->
+        <div id="panel-p3" class="panel">
             <div class="card">
-                <h3 class="section-title">
-                    <span>FASE 1: Investigasi Pola Hidup & Kelainan Saraf</span>
-                    <span class="pbl-badge">PBL</span>
-                    <span class="deep-badge">Critical Evaluation</span>
-                </h3>
-                <div class="info-box">
-                    <strong>Masalah Analisis Pola Hidup:</strong><br>
-                    Banyak informasi di media sosial mengklaim bahwa "begadang sambil main game dapat langsung merusak sel otak secara permanen." Sebagai peserta didik yang kritis, bagaimana Anda memilah antara fakta medis dan opini yang berlebihan?
-                </div>
+                <h2 class="card-title">
+                    <span>Penyelidikan Pola Hidup & Kesehatan Saraf</span>
+                    <span class="badge badge-deep">Deep Learning</span>
+                </h2>
+                <label><strong>1. Pilih Kasus Pola Hidup (Kurang Tidur / Stres / Psikotropika):</strong></label>
+                <input type="text" id="p3-faktor" placeholder="Masukkan pola hidup yang dianalisis">
+
+                <label style="margin-top:10px; display:block;"><strong>2. Dampak Fisiologis Berdasarkan Bukti Ilmiah:</strong></label>
+                <textarea id="p3-dampak" rows="3" placeholder="Jelaskan mekanisme dampaknya..."></textarea>
+
+                <button class="btn" style="margin-top:15px;" onclick="simpanP3()">Kirim Hasil Penyelidikan</button>
+                <div id="fb-p3" class="feedback"></div>
             </div>
+        </div>
 
+        <!-- PANEL 4: REKAP & CETAK -->
+        <div id="panel-rekap" class="panel">
             <div class="card">
-                <h3 class="section-title">Lembar Kerja Analisis Penyelidikan (Deep Learning)</h3>
-                <form id="form-p3">
-                    <label><strong>1. Identifikasi Faktor Risiko Pola Hidup (misal: Kurang Tidur/Stres/Psikotropika):</strong></label>
-                    <textarea rows="2" placeholder="Tuliskan faktor risiko yang kelompokmu kaji..."></textarea>
-
-                    <label style="margin-top:10px; display:block;"><strong>2. Dampak Mekanisme Fisiologis pada Sistem Saraf (Berdasarkan Bukti Ilmiah):</strong></label>
-                    <textarea rows="3" placeholder="Jelaskan pengaruhnya terhadap kerja neurotransmiter/organ saraf..."></textarea>
-
-                    <label style="margin-top:10px; display:block;"><strong>3. Solusi & Upaya Pencegahan Nyata yang Dapat Diterapkan:</strong></label>
-                    <textarea rows="2" placeholder="Rekomendasi pola hidup sehat..."></textarea>
-
-                    <button type="button" class="btn-submit" style="margin-top: 15px;" onclick="saveEWorksheet()">Kirim Jawaban E-LKPD ke Guru</button>
-                </form>
-                <div id="fb-p3" class="feedback-box"></div>
+                <h2 class="card-title">Dashboard Hasil Belajar E-LKPD</h2>
+                <div id="rekap-content">
+                    <p>Selesaikan seluruh panel kegiatan di samping untuk melihat ringkasan nilai dan jawaban Anda.</p>
+                </div>
+                <button class="btn" style="margin-top:15px;" onclick="window.print()">🖨️ Cetak / Simpan ke PDF</button>
             </div>
         </div>
 
     </div>
 
     <script>
-        function switchTab(tabId) {
-            document.querySelectorAll('.tab-content').forEach(content => {
-                content.classList.remove('active');
-            });
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.classList.remove('active');
-            });
+        let userData = { nama: '', kelas: '', p1Score: 0, p2Score: 0, p3Done: false };
 
-            document.getElementById(tabId).classList.add('active');
-            event.currentTarget.classList.add('active');
+        function showPanel(panelId, menuItem) {
+            document.querySelectorAll('.panel').forEach(p => p.classList.remove('active'));
+            document.querySelectorAll('.menu-item').forEach(m => m.classList.remove('active'));
+            
+            document.getElementById(panelId).classList.add('active');
+            menuItem.classList.add('active');
         }
 
-        function checkAnswer(element, isCorrect, feedbackId) {
-            const fb = document.getElementById(feedbackId);
-            fb.style.display = 'block';
-            if(isCorrect) {
-                fb.className = 'feedback-box feedback-success';
-                fb.innerHTML = '✅ Benar sekali! Ujung akson mensekresikan neurotransmiter di celah sinapsis.';
+        function saveIdentitas() {
+            const nama = document.getElementById('input-nama').value;
+            const kelas = document.getElementById('input-kelas').value;
+            if(nama && kelas) {
+                userData.nama = nama;
+                userData.kelas = kelas;
+                document.getElementById('user-display').innerText = `Siswa: ${nama} (${kelas})`;
+                updateProgress(25);
+                alert("Identitas berhasil disimpan!");
             } else {
-                fb.className = 'feedback-box feedback-error';
-                fb.innerHTML = '❌ Jawaban belum tepat. Coba baca kembali tabel fungsi bagian neuron di atas!';
+                alert("Harap isi Nama dan Kelas terlebih dahulu.");
             }
         }
 
-        function checkReflexOrder() {
-            const input = document.getElementById('refleks-input').value.trim().replace(/\s+/g, '');
+        function checkMatchingP1() {
+            const d = document.getElementById('m-dendrit').value.toUpperCase().trim();
+            const m = document.getElementById('m-mielin').value.toUpperCase().trim();
+            const a = document.getElementById('m-akson').value.toUpperCase().trim();
+            const fb = document.getElementById('fb-p1-game');
+
+            if(d === 'B' && m === 'A' && a === 'C') {
+                fb.className = "feedback success";
+                fb.style.display = "block";
+                fb.innerHTML = "🎉 Jawaban Sempurna! Anda berhasil memasangkan seluruh fungsi neuron dengan benar.";
+                userData.p1Score = 100;
+                updateProgress(50);
+            } else {
+                fb.className = "feedback error";
+                fb.style.display = "block";
+                fb.innerHTML = "❌ Masih ada pasangan yang belum tepat. Coba periksa kembali pilihan Anda!";
+            }
+        }
+
+        function checkRefleks() {
+            const text = document.getElementById('input-refleks').value.toLowerCase();
             const fb = document.getElementById('fb-p2');
-            fb.style.display = 'block';
-
-            if(input === "2-5-3-4-1" || input === "2,5,3,4,1") {
-                fb.className = 'feedback-box feedback-success';
-                fb.innerHTML = '🎉 Tepat sekali! Jalur refleks: Reseptor (2) ➔ Saraf Sensorik (5) ➔ Sumsum Tulang Belakang (3) ➔ Saraf Motorik (4) ➔ Efektor/Otot (1).';
+            
+            if(text.includes('sensorik') && text.includes('sumsum') && text.includes('motorik')) {
+                fb.className = "feedback success";
+                fb.style.display = "block";
+                fb.innerHTML = "✅ Tepat! Urutan busur refleks melibatkan reseptor ➔ saraf sensorik ➔ sumsum tulang belakang ➔ saraf motorik ➔ otot/efektor.";
+                userData.p2Score = 100;
+                updateProgress(75);
             } else {
-                fb.className = 'feedback-box feedback-error';
-                fb.innerHTML = '⚠️ Urutan masih keliru. Ingat: Rangsangan diterima reseptor terlebih dahulu sebelum dibawa saraf sensorik!';
+                fb.className = "feedback error";
+                fb.style.display = "block";
+                fb.innerHTML = "⚠️ Jawaban belum lengkap. Pastikan mencantumkan Saraf Sensorik, Sumsum Tulang Belakang, dan Saraf Motorik.";
             }
         }
 
-        function saveEWorksheet() {
+        function simpanP3() {
             const fb = document.getElementById('fb-p3');
-            fb.style.display = 'block';
-            fb.className = 'feedback-box feedback-success';
-            fb.innerHTML = '🚀 Jawaban E-LKPD berhasil tersimpan! Terima kasih telah menyelesaikan seluruh aktivitas dengan pendekatan Deep Learning.';
+            fb.className = "feedback success";
+            fb.style.display = "block";
+            fb.innerHTML = "🚀 Hasil analisis penyelidikan berhasil dikirim dan direkap!";
+            userData.p3Done = true;
+            updateProgress(100);
+            renderRekap();
+        }
+
+        function updateProgress(percent) {
+            document.getElementById('progress-text').innerText = percent + '%';
+            document.getElementById('progress-fill').style.width = percent + '%';
+        }
+
+        function renderRekap() {
+            const rekap = document.getElementById('rekap-content');
+            rekap.innerHTML = `
+                <table style="width:100%; border-collapse:collapse; margin-top:10px;">
+                    <tr><td style="padding:8px; border:1px solid #ccc;"><strong>Nama Siswa</strong></td><td style="padding:8px; border:1px solid #ccc;">${userData.nama || '-'}</td></tr>
+                    <tr><td style="padding:8px; border:1px solid #ccc;"><strong>Kelas</strong></td><td style="padding:8px; border:1px solid #ccc;">${userData.kelas || '-'}</td></tr>
+                    <tr><td style="padding:8px; border:1px solid #ccc;"><strong>Skor Game Neuron (P1)</strong></td><td style="padding:8px; border:1px solid #ccc;">${userData.p1Score} / 100</td></tr>
+                    <tr><td style="padding:8px; border:1px solid #ccc;"><strong>Skor Jalur Refleks (P2)</strong></td><td style="padding:8px; border:1px solid #ccc;">${userData.p2Score} / 100</td></tr>
+                    <tr><td style="padding:8px; border:1px solid #ccc;"><strong>Status Tugas Pola Hidup (P3)</strong></td><td style="padding:8px; border:1px solid #ccc;">${userData.p3Done ? 'Selesai' : 'Belum Selesai'}</td></tr>
+                </table>
+            `;
         }
     </script>
 </body>
