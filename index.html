@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="id">
 <head>
     <meta charset="UTF-8">
@@ -6,7 +6,7 @@
     <title>E-LKPD Sistem Saraf Kelas XI - UNIMED</title>
     <style>
         :root {
-            --primary: #006633; /* Warna khas UNIMED */
+            --primary: #006633;
             --secondary: #008844;
             --accent: #ffd700;
             --bg: #f4f7f6;
@@ -28,7 +28,6 @@
             padding-bottom: 40px;
         }
 
-        /* Header */
         header {
             background: white;
             border-bottom: 4px solid var(--primary);
@@ -81,14 +80,12 @@
             margin-top: 8px;
         }
 
-        /* Layout Container */
         .container {
             max-width: 900px;
             margin: 20px auto;
             padding: 0 15px;
         }
 
-        /* Navigation Tabs */
         .nav-tabs {
             display: flex;
             gap: 10px;
@@ -115,7 +112,6 @@
             box-shadow: 0 4px 8px rgba(0,102,51,0.3);
         }
 
-        /* Card Section */
         .card {
             background: var(--card-bg);
             border-radius: 12px;
@@ -155,7 +151,6 @@
             text-transform: uppercase;
         }
 
-        /* Interactive Tables & Inputs */
         table {
             width: 100%;
             border-collapse: collapse;
@@ -190,7 +185,6 @@
             box-shadow: 0 0 5px rgba(0,102,51,0.3);
         }
 
-        /* Quiz & Matching Styles */
         .quiz-option {
             display: block;
             background: #f8fafc;
@@ -240,7 +234,6 @@
             color: #721c24;
         }
 
-        /* Tab Content Control */
         .tab-content {
             display: none;
         }
@@ -260,7 +253,6 @@
 </head>
 <body>
 
-    <!-- Header Universitas Negeri Medan -->
     <header>
         <div class="header-container">
             <img src="https://upload.wikimedia.org/wikipedia/commons/2/2c/Logo_UNIMED.png" alt="Logo UNIMED" class="logo-unimed">
@@ -275,7 +267,6 @@
 
     <div class="container">
 
-        <!-- Navigasi Pertemuan -->
         <div class="nav-tabs">
             <button class="tab-btn active" onclick="switchTab('p0')">Petunjuk & Tujuan</button>
             <button class="tab-btn" onclick="switchTab('p1')">Pertemuan 1: Sel Saraf</button>
@@ -283,7 +274,6 @@
             <button class="tab-btn" onclick="switchTab('p3')">Pertemuan 3: Pola Hidup</button>
         </div>
 
-        <!-- TAB 0: PETUNJUK & TUJUAN PEMBELAJARAN -->
         <div id="p0" class="tab-content active">
             <div class="card">
                 <h3 class="section-title">🎯 Tujuan Pembelajaran (Capaian Pembelajaran)</h3>
@@ -313,9 +303,7 @@
             </div>
         </div>
 
-        <!-- TAB 1: PERTEMUAN 1 -->
         <div id="p1" class="tab-content">
-            <!-- Orientasi Masalah -->
             <div class="card">
                 <h3 class="section-title">
                     <span>FASE 1: Orientasi Masalah</span>
@@ -330,7 +318,6 @@
                 <textarea rows="3" placeholder="Tuliskan analisis atau pertanyaan pemantik kelompokmu di sini..."></textarea>
             </div>
 
-            <!-- Ringkasan Materi Interaktif -->
             <div class="card">
                 <h3 class="section-title">Bahan Ajar Ringkas: Struktur Neuron & Impuls</h3>
                 <p>Sel saraf (neuron) adalah unit fungsional penyusun sistem saraf yang bertugas meneruskan impuls listrik. Neuron terdiri atas dendrit, badan sel, inti sel, akson, selubung mielin, nodus Ranvier, dan ujung akson.</p>
@@ -352,7 +339,6 @@
                 </table>
             </div>
 
-            <!-- Interaktif / Games -->
             <div class="card">
                 <h3 class="section-title">
                     <span>Aktivitas Interaktif: Kuis Pemahaman Struktur Neuron</span>
@@ -367,9 +353,7 @@
             </div>
         </div>
 
-        <!-- TAB 2: PERTEMUAN 2 -->
         <div id="p2" class="tab-content">
-            <!-- Orientasi Masalah -->
             <div class="card">
                 <h3 class="section-title">
                     <span>FASE 1: Orientasi Masalah</span>
@@ -383,7 +367,6 @@
                 <textarea rows="3" placeholder="Tuliskan alur jalurnya (Reseptor -> Saraf Sensorik -> ... -> Efektor)"></textarea>
             </div>
 
-            <!-- Ringkasan Perbandingan -->
             <div class="card">
                 <h3 class="section-title">Materi: Gerak Sadar vs Gerak Refleks</h3>
                 <table>
@@ -414,7 +397,6 @@
                 </table>
             </div>
 
-            <!-- Game Menyusun Urutan Refleks -->
             <div class="card">
                 <h3 class="section-title">
                     <span>Interaktif: Permainan Alur Jalur Refleks</span>
@@ -430,7 +412,6 @@
             </div>
         </div>
 
-        <!-- TAB 3: PERTEMUAN 3 -->
         <div id="p3" class="tab-content">
             <div class="card">
                 <h3 class="section-title">
@@ -444,7 +425,6 @@
                 </div>
             </div>
 
-            <!-- Lembar Analisis Kasus -->
             <div class="card">
                 <h3 class="section-title">Lembar Kerja Analisis Penyelidikan (Deep Learning)</h3>
                 <form id="form-p3">
@@ -466,7 +446,6 @@
     </div>
 
     <script>
-        // Tab switching function
         function switchTab(tabId) {
             document.querySelectorAll('.tab-content').forEach(content => {
                 content.classList.remove('active');
@@ -479,7 +458,6 @@
             event.currentTarget.classList.add('active');
         }
 
-        // Quiz feedback function
         function checkAnswer(element, isCorrect, feedbackId) {
             const fb = document.getElementById(feedbackId);
             fb.style.display = 'block';
@@ -492,13 +470,11 @@
             }
         }
 
-        // Reflex order check
         function checkReflexOrder() {
             const input = document.getElementById('refleks-input').value.trim().replace(/\s+/g, '');
             const fb = document.getElementById('fb-p2');
             fb.style.display = 'block';
 
-            // Jalur benar: Reseptor (2) -> Sensorik (5) -> Interneuron (3) -> Motorik (4) -> Efektor (1)
             if(input === "2-5-3-4-1" || input === "2,5,3,4,1") {
                 fb.className = 'feedback-box feedback-success';
                 fb.innerHTML = '🎉 Tepat sekali! Jalur refleks: Reseptor (2) ➔ Saraf Sensorik (5) ➔ Sumsum Tulang Belakang (3) ➔ Saraf Motorik (4) ➔ Efektor/Otot (1).';
@@ -508,7 +484,6 @@
             }
         }
 
-        // Save E-Worksheet
         function saveEWorksheet() {
             const fb = document.getElementById('fb-p3');
             fb.style.display = 'block';
